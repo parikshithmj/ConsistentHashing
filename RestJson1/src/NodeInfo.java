@@ -2,8 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NodeInfo {
-	
+	String name;
 	String role;
+	String ip;
+	String port;
 	//can be used if needed
 	//String connected_slaves;
 	public static class Slave{
@@ -37,6 +39,24 @@ public class NodeInfo {
 	}
 	public String getRole(){
 		return role;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	public String getName(){
+		return name;
+	}
+	public void setIp(String ip){
+		this.ip = ip;
+	}
+	public String getIp(){
+		return ip;
+	}
+	public void setPort(String port){
+		this.port = port;
+	}
+	public String getPort(){
+		return port;
 	}
 	
 }
