@@ -21,24 +21,25 @@ public class RedisUtils {
     static SortedMap<Long, Long> hashKeyhashServ = null;
     static Set<Long> hashKeyhashServKeys = null;
     static SortedMap<Long, Jedis> hashServ = null;
-	public static Employee getEmployeeById(int id){//;,SortedMap<Long, Long> hashKeyhashServ,SortedMap<Long, Jedis> hashServ){
-      Employee emp = new Employee(null, null, 0);
-		byte[] hashBytes= getDigest().digest(ByteBuffer.allocate(4).putInt(String.valueOf(id).hashCode()).array());
+    
+    public static Employee getEmployeeById(int id){//;,SortedMap<Long, Long> hashKeyhashServ,SortedMap<Long, Jedis> hashServ){
+    	Employee emp = new Employee(null, null, 0);
+      	byte[] hashBytes= getDigest().digest(ByteBuffer.allocate(4).putInt(String.valueOf(id).hashCode()).array());
         Long hashSlot = java.nio.ByteBuffer.wrap(hashBytes).getLong();
         for(Long hashKeyhashServVal:hashKeyhashServ.keySet()){
         	Long val = hashKeyhashServ.get(hashKeyhashServVal);
-                            if(hashSlot < val){
-                            	String tmp = String.valueOf(hashSlot);
-                            	Jedis tmpNode = hashServ.get(val);
-                               System.out.println(tmp+"Hashslot is "+hashSlot +" servKey is "+tmpNode.get(tmp));//+"INFO"+tmpNode.info("keyspace")); 
-                              //format ->title=engineer45, name=emp:45, salary=45000
-                               String[] tmpStr = tmpNode.get(tmp).split(","); 
-                               emp.setName(tmpStr[0].split("=")[1]);
-                                emp.setSalary(Integer.parseInt(tmpStr[2].split("=")[1]));
-                                emp.setTitle(tmpStr[1].split("=")[1]);
-                               break;
-                            }
-                        }
+                if(hashSlot < val){
+                	String tmp = String.valueOf(hashSlot);
+                        Jedis tmpNode = hashServ.get(val);
+                        System.out.println(tmp+"Hashslot is "+hashSlot +" servKey is "+tmpNode.get(tmp));//+"INFO"+tmpNode.info("keyspace")); 
+                        //format ->title=engineer45, name=emp:45, salary=45000
+                        String[] tmpStr = tmpNode.get(tmp).split(","); 
+                        emp.setName(tmpStr[0].split("=")[1]);
+                        emp.setSalary(Integer.parseInt(tmpStr[2].split("=")[1]));
+                        emp.setTitle(tmpStr[1].split("=")[1]);
+                        break;
+                }
+        }
         return emp;
       }
     
